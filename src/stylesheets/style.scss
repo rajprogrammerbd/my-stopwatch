@@ -1,0 +1,10 @@
+@import "./scss_modules/fonts";
+@import "./scss_modules/variables";
+@import "./scss_modules/mixins";
+
+html {
+  & > body {
+    height: 100%;
+    background-color: $bg-color;
+  }
+}
