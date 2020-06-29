@@ -1,5 +1,6 @@
-import stopwatchStore, { stopwatch_action } from './../app/index';
+import totalReducer, { stopwatch_action } from './../app/index';
 import UpdateDOM from "./updateDom";
+import sidebar from './../../anime';
 let id = 0;
 
 export default class Stopwatch extends UpdateDOM {
@@ -26,12 +27,12 @@ export default class Stopwatch extends UpdateDOM {
     }
 
     start() {
-        if (stopwatchStore.getState().stopwatch.active) {
+        if (totalReducer.getState().stopwatch.active) {
             throw new Error("Stopwatch is already started!");
         } else {
             const startTime = new Date();
             this.getId();
-            stopwatchStore.dispatch(stopwatch_action.activeStopwatch());
+            totalReducer.dispatch(stopwatch_action.activeStopwatch());
             let updateTime = UpdateDOM.updateTime;
             let UpdatesDom = this.updateDOM;
             let element = this.element;
@@ -51,7 +52,7 @@ export default class Stopwatch extends UpdateDOM {
 
             async function setup() {
                 await c().then(date => {
-                    if (stopwatchStore.getState().stopwatch.active) {
+                    if (totalReducer.getState().stopwatch.active) {
                         let changeTime = updateTime(date.currentDate);
                         UpdatesDom(element, changeTime);
                         setTime(changeTime);
@@ -64,7 +65,7 @@ export default class Stopwatch extends UpdateDOM {
     }
 
     saveToDatabase(data, currentLaps) {
-        stopwatchStore.dispatch(stopwatch_action.addSaved({
+        totalReducer.dispatch(stopwatch_action.addSaved({
             id: this.id,
             totalTime: data.stopwatch.time,
             laps: currentLaps
@@ -73,14 +74,15 @@ export default class Stopwatch extends UpdateDOM {
 
 
     stop() {
-        if (stopwatchStore.getState().stopwatch.active) {
-            stopwatchStore.dispatch(stopwatch_action.stopStopwatch());
+        if (totalReducer.getState().stopwatch.active) {
+            totalReducer.dispatch(stopwatch_action.stopStopwatch());
             this.updateDOM(this.element, ["00", "00", "00"]);
-            stopwatchStore.dispatch(stopwatch_action.addTime({
+            totalReducer.dispatch(stopwatch_action.addTime({
                 time: this.time
             }));
-            this.saveToDatabase(stopwatchStore.getState(), this.currentLaps);
+            this.saveToDatabase(totalReducer.getState(), this.currentLaps);
             this.currentLaps = [];
+            sidebar.updateSidebarDOM();
         } else {
             throw new Error("Stopwatch isn't started!");
         }
@@ -88,12 +90,11 @@ export default class Stopwatch extends UpdateDOM {
 
     laps() {
         let id = 0;
-        if (stopwatchStore.getState().stopwatch.active) {
+        if (totalReducer.getState().stopwatch.active) {
             const result = this.lap.time;
             const obj = { id: this.lapsId, lapTimes: result, title: null, savedId: this.id }
             this.lapsId = this.lapsId + 1;
             this.currentLaps.push(obj);
-            // stopwatchStore.dispatch(stopwatch_action.addLaps({ laps: obj }));
         } else {
             throw new Error("Stopwatch hasn't started!");
         }

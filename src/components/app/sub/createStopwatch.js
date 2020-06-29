@@ -23,6 +23,9 @@ const StopwatchSlice = createSlice({
                 totalTime: action.payload.totalTime,
                 laps: action.payload.laps
             });
+        },
+        removedSaved: (state, action) => {
+            state.saved = [];
         }
     }
 });

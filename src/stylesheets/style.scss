@@ -2,9 +2,395 @@
 @import "./scss_modules/variables";
 @import "./scss_modules/mixins";
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+* > a {
+  text-decoration: none;
+  color: $header-text-color;
+}
+
 html {
+  height: 100%;
+
   & > body {
     height: 100%;
     background-color: $bg-color;
+    font-family: "MuseoModerno", cursive;
   }
+}
+
+body > div.container {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  display: block;
+  background-color: inherit;
+  overflow: hidden;
+}
+
+body > div.container > header {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #7359ff;
+}
+
+body > div.container > header > div#header {
+  width: 90%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: inherit;
+  color: $header-text-color;
+  justify-content: space-between;
+}
+
+body > div.container > header > div#header > div.container-left h2.title {
+  padding: {
+    top: 4px;
+    bottom: 4px;
+  }
+}
+
+body > div.container > header > div#header > div.container-left h2.title a {
+  font-size: 22px;
+  text-transform: capitalize;
+  letter-spacing: -1px;
+
+  &:hover {
+    color: darken($color: #ffffff, $amount: 1%);
+  }
+
+  &:active {
+    font-size: 21.7px;
+  }
+}
+
+body > div.container > header > div#header > div.container-right p.sidebar {
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+body > div.container > content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: {
+    top: 80px;
+  }
+}
+
+body > div.container > content > div.views {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2#action {
+    font-size: 60px;
+  }
+}
+
+body > div.container > content > .buttons-columns {
+  width: 60%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: {
+    top: 35px;
+  }
+}
+
+body > div.container > content > .buttons-columns > * {
+  width: 26%;
+  background: none;
+  border: 3px solid #7359ff;
+  color: #507bf7;
+  padding: 8px;
+  border-radius: 5px;
+  outline: 0;
+  font-size: 18px;
+  font-family: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+body > div.container > content > div.bottoms-laps {
+  width: 60%;
+  min-width: 60%;
+  margin-top: 60px;
+  min-height: auto;
+  max-height: var(--contentHeight);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: {
+    top: 1px solid #ddd;
+    left: 1px solid #ddd;
+    right: 1px solid #ddd;
+    bottom: 1px solid #ddd;
+  }
+  border-radius: 5px 5px 0px 0px;
+  overflow: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  padding: 25px;
+}
+
+body > div.container > content > div.bottoms-laps > p.no-laps {
+  color: #797979;
+  margin-top: 22px;
+  font-size: 23px;
+}
+
+body > div.container > content > div.bottoms-laps > *.laps-items {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: {
+    bottom: 40px;
+  }
+  &:last-child {
+    margin: {
+      bottom: 0px;
+    }
+  }
+}
+
+body > div.container > content > div.bottoms-laps > *.laps-items .top {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+body
+  > div.container
+  > content
+  > div.bottoms-laps
+  > *.laps-items
+  .top
+  > div.laps-left {
+  width: 20%;
+}
+
+body
+  > div.container
+  > content
+  > div.bottoms-laps
+  > *.laps-items
+  .top
+  > div.laps-left
+  ul {
+  margin-left: 21px;
+  font-size: 13px;
+}
+
+body
+  > div.container
+  > content
+  > div.bottoms-laps
+  > *.laps-items
+  .top
+  > div.laps-middle {
+  width: 70%;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+body
+  > div.container
+  > content
+  > div.bottoms-laps
+  > *.laps-items
+  .top
+  > div.laps-right {
+  width: 10%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+body
+  > div.container
+  > content
+  > div.bottoms-laps
+  > *.laps-items
+  .top
+  > div.laps-right
+  > img {
+  width: 12px;
+  cursor: pointer;
+  outline: 0;
+}
+
+body > div.container > content > div.bottoms-laps > *.laps-items .bottom {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8px;
+}
+
+// Working Sidebar
+body > div.container > aside {
+  $aside_width: 30%;
+  position: fixed;
+  width: $aside_width;
+  height: 100%;
+  background-color: #000;
+  color: #ffffff;
+  right: -$aside_width;
+  top: 0;
+  padding-left: 15px;
+  padding-right: 22px;
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  @media only screen and (max-width: 500px) {
+    width: 100%;
+  }
+}
+
+body > div.container > aside > div.top {
+  width: 100%;
+  height: auto;
+}
+
+body > div.container > aside > div.top > div.top-up {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 20px;
+}
+
+body > div.container > aside > div.top > div.top-up > img {
+  width: 16px;
+  margin-right: 7%;
+  cursor: pointer;
+}
+
+body > div.container > aside > div.top > div.top-down {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+body
+  > div.container
+  > aside
+  > div.top
+  > div.top-down
+  > .right
+  > small.clean-saved {
+  cursor: pointer;
+}
+
+body > div.container > aside > div.bottom {
+  margin: {
+    top: 53px;
+  }
+}
+
+body > div.container > aside > div.bottom ul {
+  margin-left: 22px;
+
+  li.no-data {
+    color: #b99c30;
+  }
+}
+
+aside > div.bottom > div.saved-wapper > div.saved-items {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  border: 1px solid #fff;
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin: {
+      bottom: 0px;
+    }
+  }
+}
+
+aside > div.bottom > div.saved-wapper > div.saved-items > .items-top {
+  width: 100%;
+  height: auto;
+  background: #fff;
+  color: #000;
+  padding: 4px;
+  cursor: pointer;
+}
+
+aside
+  > div.bottom
+  > div.saved-wapper
+  > div.saved-items
+  > .items-top
+  > h2.items-headding_title {
+  font-size: 13px;
+}
+
+aside > div.bottom > div.saved-wapper > div.saved-items > .items-bottom {
+  width: 100%;
+  padding: 4px;
+  margin-top: 8px;
+  border-top: 1px solid #fff;
+  display: none;
+}
+
+aside
+  > div.bottom
+  > div.saved-wapper
+  > div.saved-items
+  > .items-bottom
+  > h2.bottom-click {
+  font-size: 15px;
+}
+
+aside
+  > div.bottom
+  > div.saved-wapper
+  > div.saved-items
+  > .items-bottom
+  > .laps_title {
+  font-size: 13px;
+}
+
+aside
+  > div.bottom
+  > div.saved-wapper
+  > div.saved-items
+  > .items-bottom
+  > .laps_items {
+  font-size: 13px;
 }

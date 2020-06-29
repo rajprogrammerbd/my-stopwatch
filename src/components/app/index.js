@@ -1,9 +1,10 @@
-import stopwatchReducers, { StopwatchActions } from "./stopwatch";
+import Combine, { StopwatchActions, uiActions } from "./combine";
 import { configureStore } from "@reduxjs/toolkit";
 
-const stopwatchStore = configureStore({
-    reducer: stopwatchReducers
+const totalReducer = configureStore({
+    reducer: Combine
 });
 
-export default stopwatchStore;
+export default totalReducer;
 export const stopwatch_action = StopwatchActions;
+export const uiAction = uiActions;
