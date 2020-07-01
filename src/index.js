@@ -43,17 +43,23 @@ const watch = new Stopwatch(element);
 
 start.addEventListener("click", () => {
     watch.start();
+    sidebar.clearLaps();
 });
 
 stop.addEventListener("click", () => {
     watch.stop();
+    // sidebar.changeSidebarLaps();
 });
 
 laps.addEventListener("click", () => {
     watch.laps();
 });
 
+sidebar.normalUpdateLaps(document.getElementsByClassName("bottoms-laps")[0], sidebar.updateLapsItems, sidebar.updateLapsNone);
+
 cleanSaved.addEventListener("click", () => {
     totalReducer.dispatch(stopwatch_action.removedSaved());
     sidebar.updateSidebarDOM();
 });
+
+// sidebar.askQuestion();

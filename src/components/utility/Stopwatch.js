@@ -92,9 +92,12 @@ export default class Stopwatch extends UpdateDOM {
         let id = 0;
         if (totalReducer.getState().stopwatch.active) {
             const result = this.lap.time;
-            const obj = { id: this.lapsId, lapTimes: result, title: null, savedId: this.id }
+            const obj = { id: this.lapsId, lapTimes: result, title: undefined, savedId: this.id }
             this.lapsId = this.lapsId + 1;
+            sidebar.updateLaps(obj);
             this.currentLaps.push(obj);
+            sidebar.updateState(this.currentLaps);
+            this.currentLaps = sidebar.updateData(this.currentLaps);
         } else {
             throw new Error("Stopwatch hasn't started!");
         }

@@ -1,11 +1,11 @@
 import anime from 'animejs/lib/anime.es.js';
-import totalReducer from './components/app/index';
+import totalReducer, { stopwatch_action } from './components/app/index';
 import { uiAction } from './components/app/index';
-import { remove } from 'animejs';
 
 class Sidebar {
     constructor() {
         this.clickPointers = {}
+        this.lapsArray = [];
     }
 
     open(element) {
@@ -194,6 +194,195 @@ class Sidebar {
 
         saved();
     }
+
+    updateLapsNone(element) {
+        let main = document.createElement("p");
+        main.setAttribute("class", "no-laps");
+        let text = document.createTextNode("No Laps Yet");
+        main.appendChild(text);
+        element.appendChild(main);
+    }
+
+    updateLapsItems(array = [], element) {
+        let elements;
+        for (let i = 0; i < array.length; i++) {
+            elements = document.createElement("div");
+            elements.setAttribute("class", "laps-items");
+            elements.innerHTML = `
+            <div class="top">
+                <div class="laps-left">
+                    <ul>
+                        <li>${array[i].lapTimes[0]}: ${array[i].lapTimes[1]}: ${array[i].lapTimes[2]}</li>
+                    </ul>
+                </div>
+                <div class="laps-middle">
+                    <p class="text">${ (array[i].title) ? array[i].title : ""}</p>
+                </div>
+                <div class="laps-right">
+                    <img src="https://www.pngmart.com/files/8/Plus-PNG-Transparent-Image.png" value="${array[i].id},${array[i].savedId}" class="laps-plus" alt="plus">
+				    <img src="https://toppng.com/uploads/preview/it-is-worthless-discarded-material-or-objects-trash-bin-icon-11563266799e4omadmqae.png" value="${array[i].id},${array[i].savedId}" class="laps-delete" alt="delete">
+                </div>
+            </div>
+            <div class="bottom">
+                <hr color="#dedede" width="80%">
+            </div>
+            `;
+            element.appendChild(elements);
+        }
+
+    }
+
+    getLapsTitleChanged(id, savedId) {
+        console.log(this.lapsArray, id, savedId);
+    }
+
+    customForLoop(slice) {
+        let variable;
+        for (let i = 0; i < slice.length; i++) {
+            if (variable) {
+                variable = variable + slice[i];
+            } else {
+                variable = slice[i];
+            }
+        }
+        return variable;
+    }
+
+    splitsArray(str, customForLoop) {
+        let arr = str.split("");
+        let index = arr.indexOf(",");
+        let firstNumber;
+        let lastNumber;
+        let last = arr.slice((index + 1),);
+        let first = arr.slice(0, index);
+        firstNumber = customForLoop(first);
+        lastNumber = customForLoop(last);
+        return [firstNumber, lastNumber];
+    }
+
+    askQuestion() {
+        const main = document.getElementsByTagName("body")[0];
+        const element = document.createElement("div");
+        element.setAttribute("class", "ask-question");
+        const paragraph = document.createElement("p");
+        paragraph.setAttribute("class", "question-title");
+        paragraph.appendChild(document.createTextNode("Enter your title"));
+        element.appendChild(paragraph);
+        const input = document.createElement("input");
+        input.setAttribute("class", "question-input");
+        input.setAttribute("placeholder", "Enter Your Title");
+        input.setAttribute("type", "text");
+        element.appendChild(input);
+        const wapperButton = document.createElement("div");
+        wapperButton.setAttribute("class", "button-wapper");
+        const button = document.createElement("button");
+        button.setAttribute("class", "question-submit");
+        button.setAttribute("value", "submit");
+        button.appendChild(document.createTextNode("SUBMIT"));
+        wapperButton.appendChild(button);
+        const nextButton = document.createElement("button");
+        nextButton.setAttribute("class", "question-reject");
+        nextButton.setAttribute("value", "reject");
+        nextButton.appendChild(document.createTextNode("REJECT"));
+        wapperButton.appendChild(nextButton);
+        element.appendChild(wapperButton);
+        main.appendChild(element);
+    }
+
+    removeAskQuestion() {
+
+    }
+
+    clearLaps() {
+        let splitsArray = this.splitsArray;
+        let customForLoop = this.customForLoop;
+        let thisIs = this;
+        let updateData = this.updateData;
+        let normalUpdateLaps = this.normalUpdateLaps;
+        let updateLapsItems = this.updateLapsItems;
+        let updateLapsNone = this.updateLapsNone;
+
+        function remove() {
+            const element = document.getElementsByClassName("bottoms-laps")[0];
+            element.remove();
+            const e = document.createElement("div");
+            e.setAttribute("class", "bottoms-laps");
+            e.onclick = function (e) {
+                if (e.target.className === "laps-plus") {
+                    if (totalReducer.getState().stopwatch.active) {
+                        const str = e.target.attributes[1].value;
+                        const arr = splitsArray(str, customForLoop);
+                        // I Have to write code from here...
+
+                        updateData(thisIs.lapsArray, function () {
+                            let first = Number(arr[0]);
+                            let last = Number(arr[1]);
+
+                            const newArray = thisIs.lapsArray.map(obj => {
+                                if (obj.id === first && obj.savedId === last) {
+                                    obj.title = "Title Added!";
+                                }
+                                return obj;
+                            });
+
+                            remove();
+                            normalUpdateLaps(newArray, updateLapsItems, updateLapsNone);
+                            return newArray;
+                        });
+                    } else {
+                        throw new Error("only title can be update when stopwatch is started!");
+                    }
+                }
+            }
+            const ne = document.createElement("p");
+            ne.setAttribute("class", "no-laps");
+            ne.appendChild(document.createTextNode("No Laps Yet"));
+            e.appendChild(ne);
+            document.getElementsByTagName("content")[0].appendChild(e);
+        }
+        remove();
+
+    }
+
+    normalUpdateLaps(array = [], updateLapsItems, updateLapsNone) {
+        const element = document.getElementsByClassName("bottoms-laps")[0];
+        const remove_one = document.getElementsByClassName("no-laps")[0];
+        // in here i have to call 2 function and according to the length of laps, it set one of those element.
+        if (array.length > 0) {
+            if (remove_one) {
+                remove_one.remove();
+            }
+            updateLapsItems(array, element);
+        } else {
+            updateLapsNone(element);
+        }
+    }
+
+    updateData(stateLaps, fn = undefined) {
+
+        if (fn) {
+            return fn(stateLaps);
+        } else {
+            return stateLaps;
+        }
+    }
+
+    updateLaps(laps) {
+        let array = [];
+        array.push(laps);
+        this.normalUpdateLaps(array, this.updateLapsItems, this.updateLapsNone);
+    }
+
+    changeSidebarLaps() {
+        console.log("click");
+    }
+
+    updateState(arr) {
+        this.lapsArray = arr;
+    }
 }
+
+
+
 const sidebar = new Sidebar();
 export default sidebar;

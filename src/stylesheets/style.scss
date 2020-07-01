@@ -365,7 +365,6 @@ aside > div.bottom > div.saved-wapper > div.saved-items > .items-bottom {
   padding: 4px;
   margin-top: 8px;
   border-top: 1px solid #fff;
-  display: none;
 }
 
 aside
@@ -394,3 +393,76 @@ aside
   > .laps_items {
   font-size: 13px;
 }
+
+/** Ask Question Styles Start **/
+body .ask-question {
+  position: fixed;
+  width: 50%;
+  height: 50%;
+  background-color: #1d9898;
+  top: 25%;
+  bottom: 25%;
+  left: 25%;
+  right: 25%;
+  padding: 35px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+body .ask-question > .question-title {
+  font-family: inherit;
+  color: #fff;
+  font-size: 140%;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+body .ask-question > .question-input {
+  outline: 0;
+  width: 80%;
+  height: 10%;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 13px;
+  padding-left: 10px;
+}
+
+body .ask-question > .button-wapper {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+body .ask-question > .button-wapper > button {
+  color: #ffffff;
+  width: 47%;
+  font-family: sans-serif;
+  font-weight: lighter;
+  font-size: 11px;
+  padding: 9px;
+  border: none;
+  border-radius: 5px;
+  transform: scale(1);
+  cursor: pointer;
+  transform: 0.2s all ease;
+  outline: 0;
+
+  &:hover {
+    transform: scale(1.01);
+  }
+}
+
+body .ask-question > .button-wapper > .question-submit {
+  background-color: green;
+}
+
+body .ask-question > .button-wapper > .question-reject {
+  background-color: red;
+}
+/** Ask Question Styles End **/
