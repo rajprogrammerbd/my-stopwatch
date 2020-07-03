@@ -3,7 +3,7 @@ import UpdateDOM from "./updateDom";
 import sidebar from './../../anime';
 let id = 0;
 
-export default class Stopwatch extends UpdateDOM {
+class Stopwatch extends UpdateDOM {
     constructor(element) {
         super(element);
         this.time = ["00", "00", "00"];
@@ -80,12 +80,20 @@ export default class Stopwatch extends UpdateDOM {
             totalReducer.dispatch(stopwatch_action.addTime({
                 time: this.time
             }));
-            this.saveToDatabase(totalReducer.getState(), this.currentLaps);
-            this.currentLaps = [];
+            this.saveToDatabase(totalReducer.getState(), totalReducer.getState().stopwatch.savedCurrentLaps);
+            totalReducer.dispatch(stopwatch_action.totalLapsChanges({
+                lapsObj: []
+            }));
             sidebar.updateSidebarDOM();
         } else {
             throw new Error("Stopwatch isn't started!");
         }
+    }
+
+    changes(Totalarray) {
+        totalReducer.dispatch(stopwatch_action.totalLapsChanges({
+            lapsObj: Totalarray
+        }));
     }
 
     laps() {
@@ -95,11 +103,18 @@ export default class Stopwatch extends UpdateDOM {
             const obj = { id: this.lapsId, lapTimes: result, title: undefined, savedId: this.id }
             this.lapsId = this.lapsId + 1;
             sidebar.updateLaps(obj);
-            this.currentLaps.push(obj);
-            sidebar.updateState(this.currentLaps);
-            this.currentLaps = sidebar.updateData(this.currentLaps);
+            // this.currentLaps.push(obj);
+            totalReducer.dispatch(stopwatch_action.savedCurrentLaps({
+                laps: obj
+            }));
+
+            sidebar.updateState(totalReducer.getState().stopwatch.savedCurrentLaps);
         } else {
             throw new Error("Stopwatch hasn't started!");
         }
     }
 }
+
+const element = document.getElementById("action");
+const watch = new Stopwatch(element);
+export default watch;

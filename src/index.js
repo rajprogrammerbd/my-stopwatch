@@ -1,4 +1,4 @@
-import Stopwatch from "./components/utility/Stopwatch";
+import watch from "./components/utility/Stopwatch";
 import sidebar from './anime';
 import "./stylesheets/style.scss";
 import totalReducer, { uiAction } from './components/app/index';
@@ -33,13 +33,11 @@ sidebar.updateSidebarDOM();
     root.style.setProperty("--contentHeight", `${(document.getElementsByTagName("header")[0].offsetHeight + 80 + document.getElementsByClassName("views")[0].offsetHeight + 35 + document.getElementsByClassName("buttons-columns")[0].offsetHeight + 60)}px`);
 })();
 
-const element = document.getElementById("action");
+
 const start = document.getElementById("start");
 const stop = document.getElementById("stop");
 const laps = document.getElementById("laps");
 const cleanSaved = document.getElementsByClassName("clean-saved")[0];
-
-const watch = new Stopwatch(element);
 
 start.addEventListener("click", () => {
     watch.start();
@@ -48,7 +46,8 @@ start.addEventListener("click", () => {
 
 stop.addEventListener("click", () => {
     watch.stop();
-    // sidebar.changeSidebarLaps();
+    sidebar.saves();
+    sidebar.changeSidebarLaps();
 });
 
 laps.addEventListener("click", () => {
@@ -61,5 +60,3 @@ cleanSaved.addEventListener("click", () => {
     totalReducer.dispatch(stopwatch_action.removedSaved());
     sidebar.updateSidebarDOM();
 });
-
-// sidebar.askQuestion();

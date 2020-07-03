@@ -5,9 +5,25 @@ const StopwatchSlice = createSlice({
     initialState: {
         active: false,
         time: ["00", "00", "00"],
-        saved: []
+        saved: [],
+        savedCurrentLaps: []
     },
     reducers: {
+        titleChanged: (state, action) => {
+            state.savedCurrentLaps = state.savedCurrentLaps.map(obj => {
+                if (obj.id === action.payload.first && obj.savedId === action.payload.last) {
+                    obj.title = action.payload.title;
+                }
+
+                return obj;
+            });
+        },
+        totalLapsChanges: (state, action) => {
+            state.savedCurrentLaps = action.payload.lapsObj;
+        },
+        savedCurrentLaps: (state, action) => {
+            state.savedCurrentLaps.push(action.payload.laps);
+        },
         activeStopwatch: (state, action) => {
             state.active = true;
         },

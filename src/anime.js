@@ -1,10 +1,11 @@
 import anime from 'animejs/lib/anime.es.js';
 import totalReducer, { stopwatch_action } from './components/app/index';
 import { uiAction } from './components/app/index';
+import watch from './components/utility/Stopwatch';
 
 class Sidebar {
     constructor() {
-        this.clickPointers = {}
+        this.clickPointers = {};
         this.lapsArray = [];
     }
 
@@ -151,8 +152,6 @@ class Sidebar {
         const element = document.querySelector("aside > div.bottom");
         const custom = document.getElementsByClassName("updated-ul")[0];
         const newCustom = document.getElementsByClassName("saved-wapper")[0];
-        // updateSidebarNoElement
-        // updateSidebarElement
 
         if (savedArray.length === 0) {
             if (custom) {
@@ -193,9 +192,14 @@ class Sidebar {
         }
 
         saved();
+        return true;
     }
 
     updateLapsNone(element) {
+        const s = document.getElementsByClassName("no-laps")[0];
+        if (s) {
+            s.remove();
+        }
         let main = document.createElement("p");
         main.setAttribute("class", "no-laps");
         let text = document.createTextNode("No Laps Yet");
@@ -270,6 +274,7 @@ class Sidebar {
         element.appendChild(paragraph);
         const input = document.createElement("input");
         input.setAttribute("class", "question-input");
+        input.setAttribute("id", "question-input");
         input.setAttribute("placeholder", "Enter Your Title");
         input.setAttribute("type", "text");
         element.appendChild(input);
@@ -290,17 +295,30 @@ class Sidebar {
     }
 
     removeAskQuestion() {
+        const element = document.getElementsByClassName("ask-question")[0];
+        if (element) {
+            element.remove();
+        }
+    }
 
+    questionsError() {
+        const main = document.getElementsByClassName("ask-question")[0];
+        const element = document.createElement("small");
+        element.setAttribute("class", "question-error");
+        element.appendChild(document.createTextNode("Title can't be empty"));
+        main.appendChild(element);
     }
 
     clearLaps() {
         let splitsArray = this.splitsArray;
         let customForLoop = this.customForLoop;
         let thisIs = this;
-        let updateData = this.updateData;
         let normalUpdateLaps = this.normalUpdateLaps;
         let updateLapsItems = this.updateLapsItems;
         let updateLapsNone = this.updateLapsNone;
+        let askQuestion = this.askQuestion;
+        let questionError = this.questionsError;
+        let removeAskQuestion = this.removeAskQuestion;
 
         function remove() {
             const element = document.getElementsByClassName("bottoms-laps")[0];
@@ -309,26 +327,79 @@ class Sidebar {
             e.setAttribute("class", "bottoms-laps");
             e.onclick = function (e) {
                 if (e.target.className === "laps-plus") {
+
                     if (totalReducer.getState().stopwatch.active) {
-                        const str = e.target.attributes[1].value;
-                        const arr = splitsArray(str, customForLoop);
-                        // I Have to write code from here...
+                        function show() {
+                            return new Promise((resolves, rejects) => {
+                                askQuestion();
+                                const elements = document.getElementsByTagName("input").namedItem("question-input");
+                                const submit = document.getElementsByClassName("question-submit")[0];
+                                const reject = document.getElementsByClassName("question-reject")[0];
 
-                        updateData(thisIs.lapsArray, function () {
-                            let first = Number(arr[0]);
-                            let last = Number(arr[1]);
-
-                            const newArray = thisIs.lapsArray.map(obj => {
-                                if (obj.id === first && obj.savedId === last) {
-                                    obj.title = "Title Added!";
+                                submit.onclick = function (z) {
+                                    if (elements.value.trim() === "") {
+                                        questionError();
+                                        z.preventDefault();
+                                    } else {
+                                        resolves(elements.value);
+                                    }
                                 }
-                                return obj;
-                            });
 
-                            remove();
-                            normalUpdateLaps(newArray, updateLapsItems, updateLapsNone);
-                            return newArray;
-                        });
+                                reject.onclick = function () {
+                                    rejects({ name: "closed" });
+                                }
+                            });
+                        }
+
+                        async function main() {
+                            await show().then(val => {
+                                removeAskQuestion();
+
+
+                                if (totalReducer.getState().stopwatch.active) {
+                                    const str = e.target.attributes[1].value;
+                                    const arr = splitsArray(str, customForLoop);
+                                    // I Have to write code from here...
+
+                                    let first = Number(arr[0]);
+                                    let last = Number(arr[1]);
+
+                                    totalReducer.dispatch(stopwatch_action.titleChanged({
+                                        first,
+                                        last,
+                                        title: val
+                                    }));
+
+                                    remove();
+                                    normalUpdateLaps(totalReducer.getState().stopwatch.savedCurrentLaps, updateLapsItems, updateLapsNone);
+                                } else {
+                                    throw new Error("only title can be update when stopwatch is started!");
+                                }
+                            }).catch(error => { removeAskQuestion(); });
+                        }
+                        main();
+
+                    } else {
+                        throw new Error("only title can be update when stopwatch is started!");
+                    }
+                } else if (e.target.className === "laps-delete") {
+                    if (totalReducer.getState().stopwatch.active) {
+                        const strValue = e.target.attributes[1].value;
+                        const arr = splitsArray(strValue, customForLoop);
+
+                        let first = Number(arr[0]);
+                        let last = Number(arr[1]);
+
+                        const newArray = totalReducer.getState().stopwatch.savedCurrentLaps.filter(obj => !(obj.id === first && obj.savedId === last));
+
+                        totalReducer.dispatch(stopwatch_action.totalLapsChanges({
+                            lapsObj: newArray
+                        }));
+
+                        remove();
+                        normalUpdateLaps(newArray, updateLapsItems, updateLapsNone);
+                        watch.changes(newArray);
+
                     } else {
                         throw new Error("only title can be update when stopwatch is started!");
                     }
@@ -344,6 +415,11 @@ class Sidebar {
 
     }
 
+    saves() {
+        console.log("save is called!", this.newLapsArray);
+        watch.changes(this.newLapsArray);
+    }
+
     normalUpdateLaps(array = [], updateLapsItems, updateLapsNone) {
         const element = document.getElementsByClassName("bottoms-laps")[0];
         const remove_one = document.getElementsByClassName("no-laps")[0];
@@ -355,15 +431,6 @@ class Sidebar {
             updateLapsItems(array, element);
         } else {
             updateLapsNone(element);
-        }
-    }
-
-    updateData(stateLaps, fn = undefined) {
-
-        if (fn) {
-            return fn(stateLaps);
-        } else {
-            return stateLaps;
         }
     }
 
