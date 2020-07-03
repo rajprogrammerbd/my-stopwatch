@@ -47,7 +47,6 @@ start.addEventListener("click", () => {
 stop.addEventListener("click", () => {
     watch.stop();
     sidebar.saves();
-    sidebar.changeSidebarLaps();
 });
 
 laps.addEventListener("click", () => {

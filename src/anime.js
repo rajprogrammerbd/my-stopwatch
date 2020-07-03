@@ -416,7 +416,6 @@ class Sidebar {
     }
 
     saves() {
-        console.log("save is called!", this.newLapsArray);
         watch.changes(this.newLapsArray);
     }
 
@@ -438,10 +437,6 @@ class Sidebar {
         let array = [];
         array.push(laps);
         this.normalUpdateLaps(array, this.updateLapsItems, this.updateLapsNone);
-    }
-
-    changeSidebarLaps() {
-        console.log("click");
     }
 
     updateState(arr) {

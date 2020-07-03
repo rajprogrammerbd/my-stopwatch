@@ -24,6 +24,9 @@ const StopwatchSlice = createSlice({
         savedCurrentLaps: (state, action) => {
             state.savedCurrentLaps.push(action.payload.laps);
         },
+        cleanSavedLaps: (state, action) => {
+            state.savedCurrentLaps = [];
+        },
         activeStopwatch: (state, action) => {
             state.active = true;
         },

@@ -32,6 +32,7 @@ class Stopwatch extends UpdateDOM {
         } else {
             const startTime = new Date();
             this.getId();
+            totalReducer.dispatch(stopwatch_action.cleanSavedLaps());
             totalReducer.dispatch(stopwatch_action.activeStopwatch());
             let updateTime = UpdateDOM.updateTime;
             let UpdatesDom = this.updateDOM;
@@ -97,13 +98,11 @@ class Stopwatch extends UpdateDOM {
     }
 
     laps() {
-        let id = 0;
         if (totalReducer.getState().stopwatch.active) {
             const result = this.lap.time;
             const obj = { id: this.lapsId, lapTimes: result, title: undefined, savedId: this.id }
             this.lapsId = this.lapsId + 1;
             sidebar.updateLaps(obj);
-            // this.currentLaps.push(obj);
             totalReducer.dispatch(stopwatch_action.savedCurrentLaps({
                 laps: obj
             }));
