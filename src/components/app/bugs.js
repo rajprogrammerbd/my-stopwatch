@@ -2,10 +2,6 @@ import anime from 'animejs/lib/anime.es.js';
 
 
 class Bugs {
-    constructor() {
-        this.bug = true;
-    }
-
     deleteBug() {
         const e = document.getElementsByClassName("bug-wapper")[0];
 
