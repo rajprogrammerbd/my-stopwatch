@@ -25,6 +25,7 @@ module.exports = merge(config, {
             new optimize(),
             new Terser(),
             new htmlWebpackPlugin({
+                template: "./src/index.html",
                 minify: {
                     removeAttributeQuotes: true,
                     collapseWhitespace: true,

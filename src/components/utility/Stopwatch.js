@@ -1,6 +1,7 @@
 import totalReducer, { stopwatch_action } from './../app/index';
 import UpdateDOM from "./updateDom";
 import sidebar from './../../anime';
+import bug from './../app/bugs';
 let id = 0;
 
 class Stopwatch extends UpdateDOM {
@@ -28,7 +29,7 @@ class Stopwatch extends UpdateDOM {
 
     start() {
         if (totalReducer.getState().stopwatch.active) {
-            throw new Error("Stopwatch is already started!");
+            bug.bugAdded("Stopwatch is already started!");
         } else {
             const startTime = new Date();
             this.getId();
@@ -87,7 +88,7 @@ class Stopwatch extends UpdateDOM {
             }));
             sidebar.updateSidebarDOM();
         } else {
-            throw new Error("Stopwatch isn't started!");
+            bug.bugAdded("Stopwatch isn't started!");
         }
     }
 
@@ -109,7 +110,7 @@ class Stopwatch extends UpdateDOM {
 
             sidebar.updateState(totalReducer.getState().stopwatch.savedCurrentLaps);
         } else {
-            throw new Error("Stopwatch hasn't started!");
+            bug.bugAdded("Stopwatch hasn't started!");
         }
     }
 }

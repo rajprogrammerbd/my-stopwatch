@@ -2,6 +2,7 @@ import anime from 'animejs/lib/anime.es.js';
 import totalReducer, { stopwatch_action } from './components/app/index';
 import { uiAction } from './components/app/index';
 import watch from './components/utility/Stopwatch';
+import bug from './components/app/bugs';
 
 class Sidebar {
     constructor() {
@@ -62,7 +63,11 @@ class Sidebar {
     getSidebarRecords() {
         return new Promise((resolve, reject) => {
             const saved = totalReducer.getState().stopwatch.saved;
-            resolve(saved);
+            if (saved) {
+                resolve(saved);
+            } else {
+                reject("Fail to get stopwatch value");
+            }
         });
     }
 
@@ -187,7 +192,7 @@ class Sidebar {
             await this.getSidebarRecords().then(savedArray => {
                 this.change(savedArray);
             }).catch(err => {
-                throw new Error(err);
+                bug.bugAdded(err.message);
             });
         }
 
@@ -234,10 +239,6 @@ class Sidebar {
             element.appendChild(elements);
         }
 
-    }
-
-    getLapsTitleChanged(id, savedId) {
-        console.log(this.lapsArray, id, savedId);
     }
 
     customForLoop(slice) {
@@ -373,14 +374,14 @@ class Sidebar {
                                     remove();
                                     normalUpdateLaps(totalReducer.getState().stopwatch.savedCurrentLaps, updateLapsItems, updateLapsNone);
                                 } else {
-                                    throw new Error("only title can be update when stopwatch is started!");
+                                    bug.bugAdded("title can be update when stopwatch is started!");
                                 }
                             }).catch(error => { removeAskQuestion(); });
                         }
                         main();
 
                     } else {
-                        throw new Error("only title can be update when stopwatch is started!");
+                        bug.bugAdded("title can be update when stopwatch is started!");
                     }
                 } else if (e.target.className === "laps-delete") {
                     if (totalReducer.getState().stopwatch.active) {
@@ -401,7 +402,7 @@ class Sidebar {
                         watch.changes(newArray);
 
                     } else {
-                        throw new Error("only title can be update when stopwatch is started!");
+                        bug.bugAdded("only delete when stopwatch is started!");
                     }
                 }
             }
