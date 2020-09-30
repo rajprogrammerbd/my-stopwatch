@@ -11,18 +11,59 @@ class Sidebar {
     }
 
     open(element) {
+        let width = "30%";
+
+        if ( window.innerWidth > 850  ) {
+            width = "30%";
+        } else if ( window.innerWidth <= 722 && window.innerWidth > 560 ) {
+            width = "41%";
+        } else if ( window.innerWidth <= 560 ) {
+            width = "100%";
+        }
+
         anime({
             targets: element,
-            right: "-2%",
+            width: width,
+            right: "0%",
             easing: 'easeInOutQuad',
             duration: 500
         });
     }
 
+    adding_animation() {
+        let width = "30%";
+        let right = "-30%";
+        const element = document.getElementsByTagName("aside")[0];
+
+
+        window.addEventListener('resize', function() {
+            if ( window.innerWidth > 850  ) {
+                element.style.width = "30%";
+                element.style.right = "-30%";
+            } else if ( window.innerWidth <= 722 && window.innerWidth > 560 ) {
+                element.style.width = "41%";
+                element.style.right = "-41%";
+            } else if ( window.innerWidth <= 560 ) {
+                element.style.width = "100%";
+                element.style.right = "-100%";
+            }
+        });
+    }
+
     close(element) {
+        let value = "-30%";
+
+        if ( window.innerWidth > 850  ) {
+            value = "-30%";
+        } else if ( window.innerWidth <= 722 && window.innerWidth > 560 ) {
+            value = "-41%";
+        } else if ( window.innerWidth <= 560 ) {
+            value = "-100%";
+        }
+        
         anime({
             targets: element,
-            right: "-30%",
+            right: value,
             easing: 'easeInOutQuad',
             duration: 500
         });

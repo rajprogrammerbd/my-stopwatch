@@ -100,6 +100,10 @@ body > div.container > content > div.views {
 
   h2#action {
     font-size: 60px;
+
+    @media screen and ( max-width: 880px ) {
+      font-size: 50px;
+    }
   }
 }
 
@@ -112,6 +116,9 @@ body > div.container > content > .buttons-columns {
   justify-content: space-between;
   margin: {
     top: 35px;
+  }
+  @media screen and ( max-width: 588px ) {
+    width: 80%;
   }
 }
 
@@ -155,6 +162,11 @@ body > div.container > content > .buttons-columns > * {
   &:hover:before {
     width: 100%;
   }
+
+  @media screen and ( max-width: 880px ) {
+    width: 28%;
+    padding: 7px;
+  }
 }
 
 body > div.container > content > div.bottoms-laps {
@@ -180,6 +192,10 @@ body > div.container > content > div.bottoms-laps {
     display: none;
   }
   padding: 25px;
+
+  @media screen and ( max-width: 588px ) {
+    width: 80%;
+  }
 }
 
 body > div.container > content > div.bottoms-laps > p.no-laps {
@@ -207,6 +223,7 @@ body > div.container > content > div.bottoms-laps > *.laps-items .top {
   width: 100%;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 }
 
 body
@@ -217,6 +234,10 @@ body
   .top
   > div.laps-left {
   width: 20%;
+
+  @media screen and ( max-width: 675px ) {
+    width: 25%;
+  }
 }
 
 body
@@ -229,6 +250,14 @@ body
   ul {
   margin-left: 21px;
   font-size: 13px;
+
+  @media screen and ( max-width: 830px ) {
+    font-size: 12px;
+  }
+
+  @media screen and ( max-width: 727px ) {
+    font-size: 10px;
+  }
 }
 
 body
@@ -243,6 +272,20 @@ body
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
+  .text {
+    @media screen and ( max-width: 830px ) {
+      font-size: 12px;
+    }
+
+    @media screen and ( max-width: 727px ) {
+      font-size: 10px;
+    }
+  }
+
+  @media screen and ( max-width: 785px ) {
+    width: 60%;
+  }
 }
 
 body
@@ -270,6 +313,10 @@ body
   width: 12px;
   cursor: pointer;
   outline: 0;
+
+  @media screen and ( max-width: 830px ) {
+    width: 10px;
+  }
 }
 
 body > div.container > content > div.bottoms-laps > *.laps-items .bottom {
@@ -297,8 +344,8 @@ body > div.container > aside {
   -ms-overflow-style: none;
   scrollbar-width: none;
 
-  @media only screen and (max-width: 500px) {
-    width: 100%;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -318,8 +365,12 @@ body > div.container > aside > div.top > div.top-up {
 
 body > div.container > aside > div.top > div.top-up > img {
   width: 16px;
-  margin-right: 7%;
+  margin-right: 2px;
   cursor: pointer;
+
+  @media screen and (max-width: 850px) {
+    width: 14px;
+  }
 }
 
 body > div.container > aside > div.top > div.top-down {
@@ -329,6 +380,13 @@ body > div.container > aside > div.top > div.top-down {
   align-items: center;
   justify-content: space-between;
   margin-top: 18px;
+
+  & > .left h3 {
+    
+    @media screen and (max-width: 850px) {
+      font-size: 16px;
+    }
+  }
 }
 
 body
@@ -339,6 +397,10 @@ body
   > .right
   > small.clean-saved {
   cursor: pointer;
+
+  @media screen and (max-width: 850px) {
+    font-size: 12px;
+  }
 }
 
 body > div.container > aside > div.bottom {
@@ -385,6 +447,10 @@ aside
   > .items-top
   > h2.items-headding_title {
   font-size: 13px;
+
+  @media screen and ( max-width: 850px ) {
+    font-size: 12px;
+  }
 }
 
 aside > div.bottom > div.saved-wapper > div.saved-items > .items-bottom {
@@ -401,6 +467,10 @@ aside
   > .items-bottom
   > h2.bottom-click {
   font-size: 15px;
+
+  @media screen and ( max-width: 850px ) {
+    font-size: 13px;
+  }
 }
 
 aside
@@ -419,6 +489,10 @@ aside
   > .items-bottom
   > .laps_items {
   font-size: 13px;
+
+  @media screen and ( max-width: 850px ) {
+    font-size: 11px;
+  }
 }
 
 /** Ask Question Styles Start **/

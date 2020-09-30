@@ -59,3 +59,5 @@ cleanSaved.addEventListener("click", () => {
     totalReducer.dispatch(stopwatch_action.removedSaved());
     sidebar.updateSidebarDOM();
 });
+
+sidebar.adding_animation();
